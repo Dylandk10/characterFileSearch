@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 git_status_display() {
   git status
-  #open the Bullet.java file in atom
+  #open python script as needed
   python script.py
 }
 cd python-automation
