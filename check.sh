@@ -6,7 +6,7 @@ git_status_display() {
 }
 cd python-automation
 myVar=$PWD
-echo moved into java class directory
+echo moved into python directory
 echo Current directory: $myVar
 ls
 #call the git_status fucntion
