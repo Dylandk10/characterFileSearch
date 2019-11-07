@@ -1,13 +1,35 @@
 import os
+#class to manage the userArray
+class Arrhandler:
+    def __init__(self):
+        self.nameArray = []
+    #to get all the user names in an array
+    def getAllUserName(self):
+        currentFile = os.getcwd()
+        nameFile = open(currentFile + "../../../project2/Data/UserNames.txt", "r")
+        if nameFile.mode == "r":
+            for names in nameFile:
+                self.nameArray.append(names.strip())
+    #print the array
+    def printNameArray(self):
+        for i in range(len(self.nameArray)):
+            print(self.nameArray[i])
 
 def main():
+    #init usernames andfill the array
+    allusernames = Arrhandler()
+    allusernames.getAllUserName()
+    allusernames.printNameArray()
+
+    #file the name in file and if not make a new
     name = input("enter username for character file search: ")
     print("searching for " + name)
     flag = readFromFile(name)
 
     if not flag:
-        gitChanged(name)
-
+        gitChangedMakeNewFile(name)
+#read the from all chacter files and if the file does not exist or username does
+#not exist -> make a new file withname
 def readFromFile(name):
     #get the current file
     currentFile = os.getcwd()
@@ -42,7 +64,7 @@ def readFromFile(name):
     nameFile.close()
     return flag
 
-def gitChanged(name):
+def gitChangedMakeNewFile(name):
     print("Change in git status character not found")
     currentFile = os.getcwd()
     #file is not made so make a file and add the Data
@@ -52,6 +74,7 @@ def gitChanged(name):
     file.write("password = " + "\n")
     file.write("score = " + "\n")
     file.close()
+
 #to initial the program from __main__
 if __name__ == "__main__":
     main()
