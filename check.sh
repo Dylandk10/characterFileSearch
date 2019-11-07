@@ -1,7 +1,7 @@
 #!/usr/bin/sh
 git_status_display() {
   set flag=0
-  #if no changes in git
+  #if there is a chnage in git status
   if [[ `git status --porcelain` ]]; then
     git status
     flag=1
@@ -25,10 +25,10 @@ main() {
   git_status_display
   set result=$?
   if [[ $result -eq 0 ]]; then
-    run_python_character_script
+    echo launching atom
+    atom
   elif [[ $result -eq 1 ]]; then
-    echo check git status
-    #going to add the makegit.sh
+    run_python_character_script
   fi
 }
 

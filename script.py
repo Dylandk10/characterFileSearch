@@ -1,79 +1,88 @@
 import os
 #class to manage the userArray
-class Arrhandler:
+class UsersHandler:
     def __init__(self):
-        self.nameArray = []
+        self.name_array = []
+        self.current_file = os.getcwd()
     #to get all the user names in an array
-    def getAllUserName(self):
-        currentFile = os.getcwd()
-        nameFile = open(currentFile + "../../../project2/Data/UserNames.txt", "r")
-        if nameFile.mode == "r":
-            for names in nameFile:
-                self.nameArray.append(names.strip())
+    def get_all_user_names(self):
+        name_file = open(self.current_file + "../../../project2/Data/UserNames.txt", "r")
+        if name_file.mode == "r":
+            for names in name_file:
+                self.name_array.append(names.strip())
     #print the array
-    def printNameArray(self):
-        for i in range(len(self.nameArray)):
-            print(self.nameArray[i])
+    def print_name_array(self):
+        for i in range(len(self.name_array)):
+            print(self.name_array[i])
+
+#manages file Reading
+class CharacterHandler:
+    def __init__(self, name):
+        self.name = name
+        self.current_file = os.getcwd()
+        #read the from all chacter files and if the file does not exist or username does
+        #not exist -> make a new file withname
+    def search_for_name(self):
+        print("searching for name in character directory")
+        flag = False
+        found_name = ""
+        found_file = ""
+        name_array = []
+        #nav back into Data files
+        name_file = open(self.current_file + "../../../project2/Data/UserNames.txt", "r")
+        if name_file.mode == "r":
+            for names in name_file:
+                name_array.append(names)
+        #searching for names in each file
+        for i in range(len(name_array)):
+            #nav back to character files
+            file = self.current_file + "../../../project2/Characters/" + name_array[i].strip() + ".txt"
+            print("searching file" + file)
+            character_file = open(file, "r")
+            for line in character_file:
+                compare = line.split("= ")
+                if compare[1].strip().lower() == self.name.lower():
+                    flag = True
+                    found_name = compare[1].strip()
+                    found_file = file
+
+            if flag:
+                print("found username: " + found_name + " in file: " +found_file)
+            else:
+                print("username was not in any character files")
+
+            character_file.close()
+            name_file.close()
+            return flag
+        #makes a new character file
+    def git_changed_make_new_file(self):
+        print("Change in git status character not found")
+        #file is not made so make a file and add the Data
+        file = open(self.current_file + "../../../project2/Characters/" + self.name +".txt", "w+")
+        file.write("username = " + self.name +"\n")
+        #init others to null
+        file.write("password = " + "\n")
+        file.write("score = " + "\n")
+        file.close()
+
 
 def main():
     #init usernames andfill the array
-    allusernames = Arrhandler()
-    allusernames.getAllUserName()
-    allusernames.printNameArray()
+    allusernames = UsersHandler()
+    allusernames.get_all_user_names()
+    strs = input("print all active users (y/n)?: ").lower()
+    #only check yes otherwise assume no
+    if(strs[0] == "y"):
+        allusernames.print_name_array()
+
 
     #file the name in file and if not make a new
     name = input("enter username for character file search: ")
-    print("searching for " + name)
-    flag = readFromFile(name)
-
+    #make a character object from the name
+    character_name = CharacterHandler(name)
+    flag = character_name.search_for_name()
     if not flag:
-        gitChangedMakeNewFile(name)
-#read the from all chacter files and if the file does not exist or username does
-#not exist -> make a new file withname
-def readFromFile(name):
-    #get the current file
-    currentFile = os.getcwd()
-    flag = False
-    foundName = ""
-    foundFile = ""
-    nameArray = []
-    #nav back into Data files
-    nameFile = open(currentFile + "../../../project2/Data/UserNames.txt", "r")
-    if nameFile.mode == "r":
-        for names in nameFile:
-            nameArray.append(names)
-    #searching for names in each file
-    for i in range(len(nameArray)):
-        #nav back to character files
-        file = currentFile + "../../../project2/Characters/" + nameArray[i].strip() + ".txt"
-        print("searching file" + file)
-        characterFile = open(file, "r")
-        for line in characterFile:
-            compare = line.split("= ")
-            if compare[1].strip() == "John":
-                flag = True
-                foundName = compare[1].strip()
-                foundFile = file
-
-    if flag:
-        print("found username: " + foundName + " in file: " +foundFile)
-    else:
-        print("username was not in any character files")
-
-    characterFile.close()
-    nameFile.close()
-    return flag
-
-def gitChangedMakeNewFile(name):
-    print("Change in git status character not found")
-    currentFile = os.getcwd()
-    #file is not made so make a file and add the Data
-    file = open(currentFile + "../../../project2/Characters/" + name +".txt", "w+")
-    file.write("username = " + name +"\n")
-    #init others to null
-    file.write("password = " + "\n")
-    file.write("score = " + "\n")
-    file.close()
+        character_name.git_changed_make_new_file()
 
 #to initial the program from __main__
 if __name__ == "__main__":
