@@ -1,13 +1,35 @@
-#!/usr/bin/env sh
+#!/usr/bin/sh
 git_status_display() {
-  git status
-  #open python script as needed
+  set flag=0
+  #if no changes in git
+  if [[ `git status --porcelain` ]]; then
+    git status
+    flag=1
+  else
+    echo no change in git repo
+    flag=1
+  fi
+  return $flag
+}
+
+#open python script as needed
+run_python_character_script() {
   python script.py
 }
-cd python-automation
-myVar=$PWD
-echo moved into python directory
-echo Current directory: $myVar
-ls
-#call the git_status fucntion
-git_status_display
+
+main() {
+  myVar=$PWD
+  echo Current directory: $myVar
+
+  #var for fucntion
+  git_status_display
+  set result=$?
+  if [[ $result -eq 0 ]]; then
+    run_python_character_script
+  elif [[ $result -eq 1 ]]; then
+    echo check git status
+    #going to add the makegit.sh
+  fi
+}
+
+main
