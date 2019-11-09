@@ -1,4 +1,6 @@
 import os
+from datetime import date
+from datetime import datetime
 #class to manage the userArray
 class UsersHandler:
     def __init__(self):
@@ -82,7 +84,26 @@ class CharacterHandler:
         file.write("password = " + "\n")
         file.write("score = " + "\n")
         file.close()
+    #update the character file
+    def update_character_file(self, password, score):
+        print("Change in git status character not found")
+        #file is not made so make a file and add the Data
+        file = open(self.current_file + "../../../project2/Characters/" + self.name +".txt", "w+")
+        file.write("username = " + self.name +"\n")
+        #init others to null
+        file.write("password = " + password + "\n")
+        file.write("score = " + score + "\n")
+        file.close()
 
+    def make_meta_data_file(self):
+        today = date.today()
+        str1 = today.strftime("%m/%d/%y")
+        timestamp = datetime.now()
+        str2 = str(timestamp.hour) + ":" + str(timestamp.minute) + ":" + str(timestamp.second) + ":" + str(timestamp.microsecond)
+        meta_file = open(self.current_file + "../../../project2/Meta/" + self.name +".txt", "w+")
+        meta_file.write(str1 + "\n")
+        meta_file.write(str2)
+        meta_file.close()
 
 def main():
     #init usernames andfill the array
@@ -98,6 +119,8 @@ def main():
     name = input("enter username for character file search: ")
     #make a character object from the name
     character_name = CharacterHandler(name)
+    #just for checking meta data function
+    #character_name.make_meta_data_file()
     flag = character_name.search_for_name()
     if not flag:
         #make a new character file and add user name to user name file
