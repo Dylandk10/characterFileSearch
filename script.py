@@ -79,6 +79,7 @@ class CharacterHandler:
             character_file.close()
             name_file.close()
             return flag
+    #returns the password and score of the character
     def set_password_and_score(self):
         if self.search_for_name():
             file = open(self.character_file_path + self.name + ".txt", "r")
@@ -88,6 +89,7 @@ class CharacterHandler:
             token_password = password_line[1].strip()
             token_score = score_line[1].strip()
             return token_password, token_score
+    #print the fields to show completion
     def print_character_fields(self):
         print("Chacter fields")
         print("---------------------------------")
@@ -114,6 +116,14 @@ class CharacterHandler:
         file.write("password = " + password + "\n")
         file.write("score = " + score + "\n")
         file.close()
+    #to change the password of the characters
+    def change_password(self, password):
+        self.password = password
+        self.save_charcter_file()
+    #to change the score of the character file
+    def change_score(self, score):
+        self.score = score
+        self.save_charcter_file
     #save the character file
     def save_charcter_file():
         print("Change in git status character not found")
@@ -178,14 +188,25 @@ class InputHandler:
     #the menu for updating character properties
     def update_menu(self):
         #file the name in file and if not make a new
-        name = input("enter username for character file search: ")
+        name = input("Enter username for character file search: ")
         #make a character object from the name
         character_name = CharacterHandler(name)
         flag = character_name.search_for_name()
         if not flag:
-            #make a new character file and add user name to user name file
-            character_name.git_changed_make_new_file()
-            all_user_names.add_new_user(name)
+            make_character = input("make a new character file? (y/n)")
+            if make_character == "yes" pr make_character[0] == 'y':
+                #make a new character file and add user name to user name file
+                character_name.git_changed_make_new_file()
+                all_user_names.add_new_user(name)
+                print("charcter not found made new character with name " + name)
+        else:
+            field = input("Enter field to change password or score: ")
+            if field == "password" or field[0] == 'p':
+                password = input("Enter new password")
+                chacacter_name.change_password(password)
+            elif field == "score" or field[0] == 's':
+                score = input("Enter the new score")
+                character_name.change_score(score)
         self.main_menu()
     #menu to search for character
     def search_menu(self):
