@@ -43,6 +43,9 @@ class CharacterHandler:
         self.username_file_path = OS_file_path.get_username_file_path()
         self.character_file_path = OS_file_path.get_character_file_path()
         self.metadata_file_path = OS_file_path.get_metadata_file_path()
+        #if the chasracter exist set the pass and socre
+        self.password, self.score = self.set_password_and_score()
+        self.print_character_fields()
     #search all characters and see if the character exist
     def search_for_name(self):
         print("searching for name in character directory")
@@ -76,6 +79,21 @@ class CharacterHandler:
             character_file.close()
             name_file.close()
             return flag
+    def set_password_and_score(self):
+        if self.search_for_name():
+            file = open(self.character_file_path + self.name + ".txt", "r")
+            name_line = file.readline().split("= ")
+            password_line = file.readline().split("= ")
+            score_line = file.readline().split("= ")
+            token_password = password_line[1].strip()
+            token_score = score_line[1].strip()
+            return token_password, token_score
+    def print_character_fields(self):
+        print("Chacter fields")
+        print("---------------------------------")
+        print("username: " + self.name)
+        print("password: " + self.password)
+        print("score: " + self.score)
     #makes a new character file
     def git_changed_make_new_file(self):
         print("Change in git status character not found")
@@ -95,6 +113,15 @@ class CharacterHandler:
         #init others to null
         file.write("password = " + password + "\n")
         file.write("score = " + score + "\n")
+        file.close()
+    #save the character file
+    def save_charcter_file():
+        print("Change in git status character not found")
+        #file is not made so make a file and add the Data
+        file = open(self.character_file_path + self.name +".txt", "w+")
+        file.write("username = " + self.name +"\n")
+        file.write("password = " + self.password +"\n")
+        file.write("score = " + self.score + "\n")
         file.close()
     #make a meta data file
     def make_meta_data_file(self):
@@ -159,6 +186,7 @@ class InputHandler:
             #make a new character file and add user name to user name file
             character_name.git_changed_make_new_file()
             all_user_names.add_new_user(name)
+        self.main_menu()
     #menu to search for character
     def search_menu(self):
         strs = input("Search for character name or print all names: ")
