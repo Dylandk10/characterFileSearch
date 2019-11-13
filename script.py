@@ -111,28 +111,25 @@ class CharacterHandler:
 #made easier to use with mac/linux and windows
 class OSFileHandler:
     def __init__(self):
-        self.path = ""
+        #if windows set all paths
+        if platform == "win32":
+            self.username_path = os.getcwd() + "../../../project2/Data/UserNames.txt"
+            self.charcter_path = os.getcwd() + "../../../project2/Characters/"
+            self.meta_path = os.getcwd() + "../../../project2/Meta/"
+        #else mac and linux set paths
+        else :
+            self.username_path = "../../project2/Data/UserNames.txt"
+            self.character_path = "../../project2/Characters/"
+            self.meta_path = "../../project2/Meta/"
     #handle UserName file paths
     def get_username_file_path(self):
-        if platform == "win32":
-            self.path = os.getcwd() + "../../../project2/Data/UserNames.txt"
-        else:
-            self.path = "../../project2/Data/UserNames.txt"
-        return self.path
+        return self.username_path
     #handles getting thr character file path
     def get_character_file_path(self):
-        if platform == "win32":
-            self.path = os.getcwd() + "../../../project2/Characters/"
-        else:
-            self.path = "../../project2/Characters/"
-        return self.path
+        return self.character_path
     #return the meta data file math
     def get_metadata_file_path(self):
-        if platform == "win32":
-            self.path = os.getcwd() + "../../../project2/Meta/"
-        else:
-            self.path = "../../project2/Meta/"
-        return self.path
+        return self.meta_path
 
 #controls the menu and sub menus
 class InputHandler:
